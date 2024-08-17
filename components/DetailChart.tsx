@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import "chartjs-adapter-moment";
 import { iataToCountry } from "@/lib/iata";
-import { MonitorState, MonitorTarget } from "@/uptime";
 
 ChartJS.register(
   CategoryScale,
@@ -37,12 +36,11 @@ export default function DetailChart({
     y: point.ping,
     loc: point.loc,
   }));
-
-  let data = {
+  const data = {
     datasets: [
       {
         data: latencyData,
-        borderColor: "rgb(112, 119, 140)",
+        borderColor: "rgb(59, 214, 113)",
         borderWidth: 2,
         radius: 0,
         cubicInterpolationMode: "monotone" as const,
@@ -50,8 +48,7 @@ export default function DetailChart({
       },
     ],
   };
-
-  let options = {
+  const options = {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
@@ -76,7 +73,7 @@ export default function DetailChart({
       },
       title: {
         display: true,
-        text: "Response times(ms)",
+        text: "响应时间(ms)",
         align: "start" as const,
       },
     },
@@ -93,7 +90,7 @@ export default function DetailChart({
   };
 
   return (
-    <div style={{ height: "150px" }}>
+    <div className=" h-[150px] w-full flex justify-center">
       <Line options={options} data={data} />
     </div>
   );

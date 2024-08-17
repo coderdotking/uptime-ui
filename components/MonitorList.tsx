@@ -1,34 +1,34 @@
-import { Card, Center, Divider } from "@mantine/core";
-import MonitorDetail from "./MonitorDetail";
-import { MonitorState, MonitorTarget } from "@/uptime";
+import * as React from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import MonitorDetail from "@/components/MonitorDetail";
 
-export default function MonitorList({
-  monitors,
-  state,
-}: {
-  monitors: any;
+const Divider: React.FC = () => {
+  return <div className="h-[2px] w-full bg-border my-4"></div>;
+};
+
+const MonitorList: React.FC<{
   state: MonitorState;
-}) {
+  monitors: MonitorTarget[];
+}> = ({ state, monitors }) => {
   return (
-    <Center>
-      <Card
-        shadow="sm"
-        padding="lg"
-        radius="md"
-        ml="xl"
-        mr="xl"
-        mt="xl"
-        withBorder
-        style={{ width: "865px" }}>
-        {monitors.map((monitor: MonitorTarget) => (
+    <Card className="w-full">
+      <CardHeader></CardHeader>
+      <CardContent className="select-none">
+        {monitors.map((monitor: MonitorTarget, index: number) => (
           <div key={monitor.id}>
-            <Card.Section ml="xs" mr="xs">
-              <MonitorDetail monitor={monitor} state={state} />
-            </Card.Section>
-            <Divider />
+            <MonitorDetail monitor={monitor} state={state} />
+            {index < monitors.length - 1 && <Divider />}
           </div>
         ))}
-      </Card>
-    </Center>
+      </CardContent>
+      <CardFooter className="flex justify-between"></CardFooter>
+    </Card>
   );
-}
+};
+
+export default MonitorList;

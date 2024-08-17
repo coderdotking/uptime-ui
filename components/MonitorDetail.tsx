@@ -1,9 +1,14 @@
-import { Text, Tooltip } from "@mantine/core";
+"use client";
 import { IconAlertCircle, IconCircleCheck } from "@tabler/icons-react";
 import DetailChart from "./DetailChart";
 import DetailBar from "./DetailBar";
 import { getColor } from "@/lib/color";
-import { MonitorTarget, MonitorState } from "@/uptime";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function MonitorDetail({
   monitor,
@@ -12,18 +17,16 @@ export default function MonitorDetail({
   monitor: MonitorTarget;
   state: MonitorState;
 }) {
-  if (!state.latency[monitor.id])
+  if (!state.latency[monitor.id]) {
     return (
       <>
-        <Text mt="sm" fw={700}>
-          {monitor.name}
-        </Text>
-        <Text mt="sm" fw={700}>
-          No data available, please make sure you have deployed your workers
-          with latest config and check your worker status!
-        </Text>
+        <span className="font-[700]">{monitor.name}</span>
+        <span className="font-[700]">
+          无可用数据，请确保你提供的接口返回了正确数据据
+        </span>
       </>
     );
+  }
 
   const statusIcon =
     state.incident[monitor.id].slice(-1)[0].end === undefined ? (
@@ -36,7 +39,7 @@ export default function MonitorDetail({
       />
     );
 
-  let totalTime = Date.now() / 1000 - state.incident[monitor.id][0].start[0];
+  const totalTime = Date.now() / 1000 - state.incident[monitor.id][0].start[0];
   let downTime = 0;
   for (let incident of state.incident[monitor.id]) {
     downTime += (incident.end ?? Date.now() / 1000) - incident.start[0];
@@ -49,14 +52,14 @@ export default function MonitorDetail({
 
   // Conditionally render monitor name with or without hyperlink based on monitor.url presence
   const monitorNameElement = (
-    <Text
-      mt="sm"
-      fw={700}
+    <div
+      className="font-[700]"
       style={{ display: "inline-flex", alignItems: "center" }}>
       {monitor.statusPageLink ? (
         <a
           href={monitor.statusPageLink}
           target="_blank"
+          className="flex gap-1"
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -70,28 +73,30 @@ export default function MonitorDetail({
           {statusIcon} {monitor.name}
         </>
       )}
-    </Text>
+    </div>
   );
 
   return (
-    <>
+    <TooltipProvider>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {monitor.tooltip ? (
-          <Tooltip label={monitor.tooltip}>{monitorNameElement}</Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>{monitorNameElement}</TooltipTrigger>
+            <TooltipContent>
+              <p>{monitor.tooltip}</p>
+            </TooltipContent>
+          </Tooltip>
         ) : (
           monitorNameElement
         )}
-
-        <Text
-          mt="sm"
-          fw={700}
+        <span
+          className="font-[700]"
           style={{ display: "inline", color: getColor(uptimePercent, true) }}>
-          Overall: {uptimePercent}%
-        </Text>
+          当天可用性: {uptimePercent}%
+        </span>
       </div>
-
       <DetailBar monitor={monitor} state={state} />
       <DetailChart monitor={monitor} state={state} />
-    </>
+    </TooltipProvider>
   );
 }

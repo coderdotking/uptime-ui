@@ -1,4 +1,4 @@
-type MonitorState = {
+interface MonitorState {
   lastUpdate: number;
   overallUp: number;
   overallDown: number;
@@ -26,9 +26,9 @@ type MonitorState = {
       }[]; // all data in 90 days, 1 hour interval
     }
   >;
-};
+}
 
-type MonitorTarget = {
+interface MonitorTarget {
   id: string;
   name: string;
   method: string; // "TCP_PING" or Http Method (e.g. GET, POST, OPTIONS, etc.)
@@ -43,6 +43,6 @@ type MonitorTarget = {
   headers?: Record<string, string | undefined>;
   body?: BodyInit;
   responseKeyword?: string;
-};
+}
 
-export type { MonitorState, MonitorTarget };
+declare module "chartjs-adapter-moment";

@@ -1,11 +1,12 @@
 import { getColor } from "@/lib/color";
-import { MonitorState, MonitorTarget } from "@/uptime";
-import { Box, Tooltip } from "@mantine/core";
 import { useResizeObserver } from "@mantine/hooks";
-import { useLayoutEffect, useRef, useState } from "react";
-const moment = require("moment");
-require("moment-precise-range-plugin");
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import moment from "moment";
+import "moment-precise-range-plugin";
 export default function DetailBar({
   monitor,
   state,
@@ -52,55 +53,55 @@ export default function DetailBar({
     ).toPrecision(4);
 
     uptimePercentBars.push(
-      <Tooltip
-        multiline
-        key={i}
-        label={
-          Number.isNaN(Number(dayPercent)) ? (
-            "No Data"
-          ) : (
-            <>
-              <div>{dayPercent + "%"}</div>
-              {dayDownTime > 0 && (
-                <div>{`Down for ${moment.preciseDiff(
-                  moment(0),
-                  moment(dayDownTime * 1000)
-                )}`}</div>
-              )}
-              {/* TODO: lantency detail for each bar */}
-            </>
-          )
-        }>
-        <div
-          style={{
-            height: "20px",
-            width: "7px",
-            background: getColor(dayPercent, false),
-            borderRadius: "2px",
-            marginLeft: "1px",
-            marginRight: "1px",
-          }}
-        />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className=" flex-1 cursor-pointer"
+            style={{
+              height: "20px",
+              background: getColor(dayPercent, false),
+              borderRadius: "2px",
+              marginLeft: "1px",
+              marginRight: "1px",
+            }}
+          />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>
+            {Number.isNaN(Number(dayPercent)) ? (
+              "No Data"
+            ) : (
+              <>
+                <div>{dayPercent + "%"}</div>
+                {dayDownTime > 0 && (
+                  <div>{`Down for ${moment.preciseDiff(
+                    moment(0),
+                    moment(dayDownTime * 1000)
+                  )}`}</div>
+                )}
+              </>
+            )}
+          </p>
+        </TooltipContent>
       </Tooltip>
     );
   }
 
   return (
     <>
-      <Box
+      <div
         style={{
           display: "flex",
           flexWrap: "nowrap",
           marginTop: "10px",
           marginBottom: "5px",
         }}
-        // visibleFrom="540"
         ref={barRef}>
         {uptimePercentBars.slice(
           Math.floor(Math.max(9 * 90 - barRect.width, 0) / 9),
           90
         )}
-      </Box>
+      </div>
     </>
   );
 }
