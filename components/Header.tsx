@@ -1,7 +1,12 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { pageConfig } from "@/uptime.config";
 import LogoSvg from "@/assets/svg/logo.svg";
 import Link from "next/link";
+import * as React from "react";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
+
 const linkToElement = (link: {
   label: string;
   link: string;
@@ -21,7 +26,19 @@ const linkToElement = (link: {
   );
 };
 
+const ToggleMode = () => {
+  const { theme, setTheme } = useTheme();
+  return (
+    <div  onClick={() => setTheme(theme == "light" ? "dark" : "light")}>
+      {theme == "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+    </div>
+  );
+};
+
 export default function Header() {
+  const pageConfigFilter = pageConfig.links.filter(
+    (link) => (link as any).highlight
+  );
   return (
     <header className={cn(" border-gray-200")}>
       <div
@@ -42,10 +59,13 @@ export default function Header() {
           <div className="flex gap-4">
             {pageConfig.links.map(linkToElement)}
           </div>
-          <div className="flex gap-4">
-            {pageConfig.links
-              .filter((link) => (link as any).highlight)
-              .map(linkToElement)}
+          {pageConfigFilter.length > 0 && (
+            <div className="flex gap-4">
+              {pageConfigFilter.map(linkToElement)}
+            </div>
+          )}
+          <div className="cursor-pointer">
+            <ToggleMode />
           </div>
         </div>
       </div>
