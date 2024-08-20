@@ -1,28 +1,21 @@
 "use client";
-import Header from "@/components/Header";
 import OverallStatus from "@/components/OverallStatus";
 import MonitorList from "@/components/monitor/List";
+import { useWindowVisibility } from "@/hooks/use-window-visibility";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { useLayout } from "./layout-provider";
 
-function useWindowVisibility() {
-  const [isVisible, setIsVisible] = useState(true);
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      console.log("visibility change", document.visibilityState);
-      setIsVisible(document.visibilityState === "visible");
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-  return isVisible;
-}
+const CardLayout = dynamic(
+  () => import("@/components/monitor/card-layout/List")
+);
 
 const Home: React.FC<{
   state: MonitorState | null;
   monitors: MonitorTarget[];
 }> = ({ state: _state, monitors: _monitors }) => {
+  const { layout } = useLayout();
+  const [isMounted, setIsMounted] = useState(false);
   const [monitors, setMonitors] = useState<MonitorTarget[]>(_monitors);
   const [state, setState] = useState<MonitorState | null>(_state);
   const fetchData = async () => {
@@ -34,6 +27,11 @@ const Home: React.FC<{
   const now = Math.round(Date.now() / 1000);
   const currentTime = useRef(now);
   const isWindowVisible = useWindowVisibility();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isWindowVisible) {
@@ -45,22 +43,28 @@ const Home: React.FC<{
     }, 5000);
     return () => clearInterval(interval);
   }, [isWindowVisible]);
+
   return (
-    <div className="h-full select-none">
-      <Header />
-      <div className="flex justify-between items-center container my-[60px] lg:px-48">
-        {state == null ? (
-          <div className="text-primary text-center w-full text-2xl">
-            监控状态目前尚未定义，请检查你的接口
-          </div>
-        ) : (
-          <div className=" flex flex-col gap-4 w-full md:px-8">
-            <OverallStatus state={state} currentTime={currentTime.current} />
-            <MonitorList monitors={monitors} state={state} />
-          </div>
-        )}
-      </div>
-    </div>
+    <>
+      {isMounted && (
+        <div className="flex justify-between items-center container my-[60px] lg:px-48">
+          {state == null ? (
+            <div className="text-primary text-center w-full text-2xl">
+              监控状态目前尚未定义，请检查你的接口
+            </div>
+          ) : (
+            <div className=" flex flex-col gap-4 w-full md:px-8">
+              <OverallStatus state={state} currentTime={currentTime.current} />
+              {layout === "default" ? (
+                <MonitorList monitors={monitors} state={state} />
+              ) : (
+                <CardLayout monitors={monitors} state={state} />
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ const pageConfig = {
   // 显示在您的状态页面头部的链接，可以设置 `highlight` 为 `true`
   links: [
     { link: "https://github.com/coderdotking/uptime-ui", label: "GitHub" },
-    { link: "https://blog.huala.fun/", label: "博客" },
   ],
 };
 

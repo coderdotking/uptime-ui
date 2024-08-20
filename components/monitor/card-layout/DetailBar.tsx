@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip";
 import moment from "moment";
 import "moment-precise-range-plugin";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import Divider from "@/components/Divider";
 
 const overlapLen = (x1: number, x2: number, y1: number, y2: number) => {
