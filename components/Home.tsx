@@ -48,7 +48,7 @@ const Home: React.FC<{
   return (
     <div className="h-full select-none">
       <Header />
-      <div className="my-[60px] container lg:px-48  flex justify-between items-center">
+      <div className="flex justify-between items-center container my-[60px] lg:px-48">
         {state == null ? (
           <div className="text-primary text-center w-full text-2xl">
             监控状态目前尚未定义，请检查你的接口

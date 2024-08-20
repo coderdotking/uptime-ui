@@ -1,5 +1,4 @@
 import { getColor } from "@/lib/color";
-import { useResizeObserver } from "@mantine/hooks";
 import {
   Tooltip,
   TooltipContent,
@@ -82,22 +81,13 @@ export default function DetailBar({
   monitor: MonitorTarget;
   state: MonitorState;
 }) {
-  const [barRef, barRect] = useResizeObserver();
   const totalBar = useMemo(() => {
-    const t = Math.floor(Math.max(9 * 90 - barRect.width, 0) / 9);
-    return Array.from({ length: 90 })
-      .slice(t, 90)
-      .map((_, i) => t);
-  }, [barRect]);
-
+    return Array.from({ length: 90 });
+  }, []);
   return (
-    <div className=" flex flex-nowrap gap-[2px] mt-2 mb-1" ref={barRef}>
+    <div className="flex flex-nowrap gap-[2px] mt-2 mb-1">
       {totalBar.map((t, i) => (
-        <BarItem
-          key={i}
-          incident={state.incident[monitor.id]}
-          index={89 - (t + i)}
-        />
+        <BarItem key={i} incident={state.incident[monitor.id]} index={89 - i} />
       ))}
     </div>
   );
