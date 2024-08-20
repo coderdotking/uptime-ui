@@ -1,15 +1,14 @@
+interface IncidentItem {
+  start: number[];
+  end: number | undefined; // undefined if it's still open
+  error: string[];
+}
+
 interface MonitorState {
   lastUpdate: number;
   overallUp: number;
   overallDown: number;
-  incident: Record<
-    string,
-    {
-      start: number[];
-      end: number | undefined; // undefined if it's still open
-      error: string[];
-    }[]
-  >;
+  incident: Record<string, IncidentItem[]>;
 
   latency: Record<
     string,
@@ -46,3 +45,4 @@ interface MonitorTarget {
 }
 
 declare module "chartjs-adapter-moment";
+declare module "chartjs-adapter-date-fns";
