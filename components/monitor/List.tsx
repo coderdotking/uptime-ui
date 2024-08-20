@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import MonitorDetail from "@/components/MonitorDetail";
+import MonitorDetail from "@/components/monitor/Detail";
 
 const Divider: React.FC = () => {
   return <div className="h-[2px] w-full bg-border my-4"></div>;

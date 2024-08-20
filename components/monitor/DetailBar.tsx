@@ -15,13 +15,10 @@ export default function DetailBar({
   state: MonitorState;
 }) {
   const [barRef, barRect] = useResizeObserver();
-
   const overlapLen = (x1: number, x2: number, y1: number, y2: number) => {
     return Math.max(0, Math.min(x2, y2) - Math.max(x1, y1));
   };
-
   const uptimePercentBars = [];
-
   const currentTime = Math.round(Date.now() / 1000);
   const montiorStartTime = state.incident[monitor.id][0].start[0];
 
@@ -88,20 +85,11 @@ export default function DetailBar({
   }
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "nowrap",
-          marginTop: "10px",
-          marginBottom: "5px",
-        }}
-        ref={barRef}>
-        {uptimePercentBars.slice(
-          Math.floor(Math.max(9 * 90 - barRect.width, 0) / 9),
-          90
-        )}
-      </div>
-    </>
+    <div className=" flex flex-nowrap mt-2 mb-1" ref={barRef}>
+      {uptimePercentBars.slice(
+        Math.floor(Math.max(9 * 90 - barRect.width, 0) / 9),
+        90
+      )}
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import Header from "@/components/Header";
 import OverallStatus from "@/components/OverallStatus";
-import MonitorList from "@/components/MonitorList";
+import MonitorList from "@/components/monitor/List";
 import { useEffect, useRef, useState } from "react";
 
 function useWindowVisibility() {

@@ -29,8 +29,12 @@ const linkToElement = (link: {
 const ToggleMode = () => {
   const { theme, setTheme } = useTheme();
   return (
-    <div  onClick={() => setTheme(theme == "light" ? "dark" : "light")}>
-      {theme == "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+    <div onClick={() => setTheme(theme == "light" ? "dark" : "light")}>
+      {theme == "light" ? (
+        <SunIcon className="h-4 w-4" />
+      ) : (
+        <MoonIcon className="h-4 w-4" />
+      )}
     </div>
   );
 };
@@ -40,7 +44,7 @@ export default function Header() {
     (link) => (link as any).highlight
   );
   return (
-    <header className={cn(" border-gray-200")}>
+    <header className={cn(" mt-4")}>
       <div
         className={cn(
           "container lg:px-48 h-14 flex justify-between items-center"
