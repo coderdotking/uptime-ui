@@ -1,16 +1,29 @@
-function getColor(percent: number | string, darker: boolean): string {
+export const getColor = (percent: number | string): string => {
   percent = Number(percent);
   if (percent >= 99.9) {
-    return darker ? "#059669" : "#3bd671";
+    return "bg-green-400 dark:bg-green-500";
   } else if (percent >= 99) {
-    return darker ? "#3bd671" : "#9deab8";
+    return "bg-green-300 dark:bg-green-400";
   } else if (percent >= 95) {
-    return "#f29030";
+    return "bg-green-200 dark:bg-green-300";
   } else if (Number.isNaN(percent)) {
-    return "gray";
+    return "bg-gray-100";
   } else {
-    return "#df484a";
+    return "bg-red-500";
   }
-}
+};
 
-export { getColor };
+export const getTextColor = (percent: number | string): string => {
+  percent = Number(percent);
+  if (percent >= 99.9) {
+    return "text-green-400 dark:text-green-500";
+  } else if (percent >= 99) {
+    return "text-green-300 dark:text-green-400";
+  } else if (percent >= 95) {
+    return "text-green-200 dark:text-green-300";
+  } else if (Number.isNaN(percent)) {
+    return "text-gray-100";
+  } else {
+    return "text-red-500";
+  }
+};

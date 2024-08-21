@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import DetailChart from "./DetailChart";
 import DetailBar from "./DetailBar";
-import { getColor } from "@/lib/color";
+import { getColor, getTextColor } from "@/lib/color";
 import {
   Tooltip,
   TooltipContent,
@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function MonitorDetail({
   monitor,
@@ -46,12 +47,12 @@ export default function MonitorDetail({
 
   return (
     <TooltipProvider>
-      <div className="flex justify-between items-center">
-        <div className=" flex gap-2 items-center">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
           {monitor.tooltip ? (
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="font-[700] flex gap-1 items-center">
+                <div className="flex items-center gap-1 font-[700]">
                   {monitor.name}
                 </div>
               </TooltipTrigger>
@@ -60,7 +61,7 @@ export default function MonitorDetail({
               </TooltipContent>
             </Tooltip>
           ) : (
-            <div className="font-[700] flex gap-1">{monitor.name}</div>
+            <div className="flex gap-1 font-[700]">{monitor.name}</div>
           )}
           {monitor.statusPageLink && (
             <Link href={monitor.statusPageLink} target="_blank">
@@ -69,8 +70,9 @@ export default function MonitorDetail({
           )}
         </div>
         <span
-          className="font-[700] text-sm"
-          style={{ display: "inline", color: getColor(uptimePercent, true) }}>
+          className={cn("text-sm font-[700]", getTextColor(uptimePercent))}
+          style={{ display: "inline" }}
+        >
           当天可用性: {uptimePercent}%
         </span>
       </div>

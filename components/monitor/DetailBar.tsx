@@ -8,6 +8,7 @@ import moment from "moment";
 import "moment-precise-range-plugin";
 import React, { useMemo } from "react";
 import Divider from "@/components/Divider";
+import { cn } from "@/lib/utils";
 
 const overlapLen = (x1: number, x2: number, y1: number, y2: number) => {
   return Math.max(0, Math.min(x2, y2) - Math.max(x1, y1));
@@ -29,7 +30,7 @@ const BarItem: React.FC<{
     dayStart,
     dayEnd,
     montiorStartTime,
-    currentTime
+    currentTime,
   );
   // 统计故障时间
   const dayDownTime = incident.reduce((acc, cur) => {
@@ -44,18 +45,19 @@ const BarItem: React.FC<{
     100
   ).toPrecision(4);
 
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <div
-          className="flex-1 cursor-pointer h-[20px] rounded-[2px]"
-          style={{
-            background: getColor(dayPercent, false),
-          }}
+          className={cn(
+            "h-[20px] flex-1 cursor-pointer rounded-[2px]",
+            getColor(dayPercent),
+          )}
         />
       </TooltipTrigger>
       <TooltipContent>
-        <div className=" flex flex-col">
+        <div className="flex flex-col">
           {Number.isNaN(Number(dayPercent)) ? (
             "暂无数据"
           ) : (
@@ -64,7 +66,7 @@ const BarItem: React.FC<{
               {dayDownTime > 0 && (
                 <span>{`故障时间 ${moment.preciseDiff(
                   moment(0),
-                  moment(dayDownTime * 1000)
+                  moment(dayDownTime * 1000),
                 )}`}</span>
               )}
             </>
@@ -87,7 +89,7 @@ export default function DetailBar({
   }, []);
   return (
     <div>
-      <div className="flex flex-nowrap gap-[2px] mt-2 mb-1">
+      <div className="mb-1 mt-2 flex flex-nowrap gap-[2px]">
         {totalBar.map((t, i) => (
           <BarItem
             key={i}
@@ -96,7 +98,7 @@ export default function DetailBar({
           />
         ))}
       </div>
-      <div className="text-[12px] flex justify-between items-center gap-4 text-gray-400">
+      <div className="flex items-center justify-between gap-4 text-[12px] text-gray-400">
         <span className="shrink-0">90 days ago</span>
         <Divider className="h-px" />
         <span className="shrink-0"> {100}% uptime</span>

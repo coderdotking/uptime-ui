@@ -1,14 +1,12 @@
 "use client";
 import OverallStatus from "@/components/OverallStatus";
-import MonitorList from "@/components/monitor/List";
 import { useWindowVisibility } from "@/hooks/use-window-visibility";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useLayout } from "./layout-provider";
+import DefaultLayout from "./monitor/DefaultLayout";
 
-const CardLayout = dynamic(
-  () => import("@/components/monitor/card-layout/List")
-);
+const CardLayout = dynamic(() => import("@/components/monitor/CardLayout"));
 
 const Home: React.FC<{
   state: MonitorState | null;
@@ -47,16 +45,16 @@ const Home: React.FC<{
   return (
     <>
       {isMounted && (
-        <div className="flex justify-between items-center container my-[60px] lg:px-48">
+        <div className="container my-[60px] flex items-center justify-between lg:px-48">
           {state == null ? (
-            <div className="text-primary text-center w-full text-2xl">
+            <div className="w-full text-center text-2xl text-primary">
               监控状态目前尚未定义，请检查你的接口
             </div>
           ) : (
-            <div className=" flex flex-col gap-4 w-full md:px-8">
+            <div className="flex w-full flex-col gap-4 md:px-8">
               <OverallStatus state={state} currentTime={currentTime.current} />
               {layout === "default" ? (
-                <MonitorList monitors={monitors} state={state} />
+                <DefaultLayout monitors={monitors} state={state} />
               ) : (
                 <CardLayout monitors={monitors} state={state} />
               )}

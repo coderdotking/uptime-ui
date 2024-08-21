@@ -1,12 +1,8 @@
 import * as React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
-import MonitorDetail from "@/components/monitor//card-layout/Detail";
-import DetailChart from "../DetailChart";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import DetailChart from "./DetailChart";
 import DetailBar from "./DetailBar";
+import MonitorDetail from "./Detail";
 
 const MonitorList: React.FC<{
   state: MonitorState;

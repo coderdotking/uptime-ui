@@ -11,7 +11,7 @@ const Divider: React.FC = () => {
   return <div className="h-[2px] w-full bg-border my-4"></div>;
 };
 
-const MonitorList: React.FC<{
+const DefaultLayout: React.FC<{
   state: MonitorState;
   monitors: MonitorTarget[];
 }> = ({ state, monitors }) => {
@@ -31,4 +31,4 @@ const MonitorList: React.FC<{
   );
 };
 
-export default MonitorList;
+export default DefaultLayout;

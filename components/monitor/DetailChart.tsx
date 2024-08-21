@@ -1,28 +1,13 @@
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip as ChartTooltip,
-  Legend,
-  TimeScale,
-} from "chart.js";
 import "chartjs-adapter-moment";
 import { iataToCountry } from "@/lib/iata";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
+import moment from "moment";
+import { LineChart, CartesianGrid, XAxis, YAxis, Line } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
   ChartTooltip,
-  Legend,
-  TimeScale
-);
+  ChartTooltipContent,
+} from "../ui/chart";
 
 export default function DetailChart({
   monitor,
@@ -32,66 +17,79 @@ export default function DetailChart({
   state: MonitorState;
 }) {
   const latencyData = state.latency[monitor.id].recent.map((point) => ({
-    x: point.time * 1000,
-    y: point.ping,
+    time: point.time * 1000,
+    ping: point.ping,
     loc: point.loc,
   }));
-  const data = {
-    datasets: [
-      {
-        data: latencyData,
-        borderColor: "rgb(59, 214, 113)",
-        borderWidth: 2,
-        radius: 0,
-        cubicInterpolationMode: "monotone" as const,
-        tension: 0.4,
-      },
-    ],
-  };
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: "index" as const,
-      intersect: false,
-    },
-    animation: {
-      duration: 0,
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (item: any) => {
-            if (item.parsed.y) {
-              return `${item.parsed.y}ms (${iataToCountry(item.raw.loc)})`;
-            }
-          },
-        },
-      },
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: "响应时间(ms)",
-        align: "start" as const,
-      },
-    },
-    scales: {
-      x: {
-        type: "time" as const,
-        ticks: {
-          source: "auto" as const,
-          maxRotation: 0,
-          autoSkip: true,
-        },
-      },
-    },
-  };
 
   return (
-    <div className=" h-[150px] w-full flex justify-center">
-      <Line options={options} data={data} />
-    </div>
+    <ChartContainer
+      className="h-[150px] w-full"
+      config={
+        {
+          reponse: {
+            label: "Reponse Time",
+          },
+          ping: {
+            label: "Ping",
+            color: "hsl(var(--chart-1))",
+          },
+        } satisfies ChartConfig
+      }
+    >
+      <LineChart
+        accessibilityLayer
+        data={latencyData}
+        margin={{
+          left: 0,
+          right: 0,
+        }}
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="time"
+          tickLine={true}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={10}
+          tickFormatter={(value) => {
+            return moment(value).format("LT");
+          }}
+        />
+        <YAxis
+          dataKey="ping"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={0}
+          minTickGap={10}
+          tickFormatter={(value) => {
+            return `${value}`;
+          }}
+        />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              className=""
+              nameKey="reponse"
+              labelFormatter={(value, payload) => {
+                console.log(payload);
+                const [item1] = payload;
+                const {
+                  payload: { ping, x },
+                } = item1;
+                return moment(x).format();
+              }}
+            />
+          }
+        />
+        <Line
+          dataKey={"ping"}
+          type="monotone"
+          stroke={`var(--color-ping)`}
+          strokeWidth={2}
+          dot={false}
+        />
+      </LineChart>
+    </ChartContainer>
   );
 }
