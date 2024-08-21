@@ -70,14 +70,12 @@ export default function MonitorDetail({
           )}
         </div>
         <span
-          className={cn("text-sm font-[700]", getTextColor(uptimePercent))}
+          className={cn("text-sm font-bold", getTextColor(uptimePercent))}
           style={{ display: "inline" }}
         >
           当天可用性: {uptimePercent}%
         </span>
       </div>
-      <DetailBar monitor={monitor} state={state} />
-      <DetailChart monitor={monitor} state={state} />
     </TooltipProvider>
   );
 }

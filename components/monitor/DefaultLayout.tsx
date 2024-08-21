@@ -6,9 +6,11 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import MonitorDetail from "@/components/monitor/Detail";
+import DetailBar from "./DetailBar";
+import DetailChart from "./DetailChart";
 
 const Divider: React.FC = () => {
-  return <div className="h-[2px] w-full bg-border my-4"></div>;
+  return <div className="my-4 h-[2px] w-full bg-border"></div>;
 };
 
 const DefaultLayout: React.FC<{
@@ -22,6 +24,8 @@ const DefaultLayout: React.FC<{
         {monitors.map((monitor: MonitorTarget, index: number) => (
           <div key={monitor.id}>
             <MonitorDetail monitor={monitor} state={state} />
+            <DetailBar monitor={monitor} state={state} />
+            <DetailChart monitor={monitor} state={state} />
             {index < monitors.length - 1 && <Divider />}
           </div>
         ))}
