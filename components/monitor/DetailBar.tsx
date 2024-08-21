@@ -1,4 +1,3 @@
-import { getColor } from "@/lib/color";
 import {
   Tooltip,
   TooltipContent,
@@ -9,7 +8,7 @@ import "moment-precise-range-plugin";
 import React, { useMemo } from "react";
 import Divider from "@/components/Divider";
 import { cn } from "@/lib/utils";
-
+import { getColor } from "@/lib/color";
 const overlapLen = (x1: number, x2: number, y1: number, y2: number) => {
   return Math.max(0, Math.min(x2, y2) - Math.max(x1, y1));
 };

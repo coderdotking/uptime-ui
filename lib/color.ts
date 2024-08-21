@@ -7,7 +7,7 @@ export const getColor = (percent: number | string): string => {
   } else if (percent >= 95) {
     return "bg-green-200 dark:bg-green-300";
   } else if (Number.isNaN(percent)) {
-    return "bg-gray-100";
+    return "bg-gray-300 dark:bg-gray-500";
   } else {
     return "bg-red-500";
   }
@@ -22,7 +22,7 @@ export const getTextColor = (percent: number | string): string => {
   } else if (percent >= 95) {
     return "text-green-200 dark:text-green-300";
   } else if (Number.isNaN(percent)) {
-    return "text-gray-100";
+    return "text-gray-300 dark:text-gray-500";
   } else {
     return "text-red-500";
   }
