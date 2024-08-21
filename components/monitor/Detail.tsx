@@ -73,7 +73,7 @@ export default function MonitorDetail({
           className={cn("text-sm font-bold", getTextColor(uptimePercent))}
           style={{ display: "inline" }}
         >
-          当天可用性: {uptimePercent}%
+          全天可用性: {uptimePercent}%
         </span>
       </div>
     </TooltipProvider>

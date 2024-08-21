@@ -38,10 +38,8 @@ export default function Header() {
         <div className=" font-bold text-lg text-primary">
           <Link href={"/"}>
             <div className=" flex gap-1 items-center">
-              <span>
-                <LogoSvg className="w-6 h-6" />
-              </span>
-              <span>{pageConfig.title || "Uptime Checker"}</span>
+            
+              <span>{pageConfig.title || "Uptime Monitor"}</span>
             </div>
           </Link>
         </div>

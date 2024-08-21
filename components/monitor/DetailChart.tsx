@@ -36,6 +36,7 @@ export default function DetailChart({
             },
           } satisfies ChartConfig
         }
+        title="Latency"
       >
         <LineChart
           className="h-full w-full"
@@ -57,34 +58,28 @@ export default function DetailChart({
               return moment(value).format("LT");
             }}
           />
-          {/* <YAxis
-            dataKey="ping"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={25}
-            minTickGap={10}
-            tickFormatter={(value) => {
-              return `${value}`;
-            }}
-          /> */}
           <ChartTooltip
             content={
               <ChartTooltipContent
                 className=""
                 nameKey="reponse"
-                labelFormatter={(value, payload) => {
-                  console.log(payload);
+                labelFormatter={(_, payload) => {
                   const [item1] = payload;
                   const {
-                    payload: { ping, x },
+                    payload: { ping, time },
                   } = item1;
-                  return moment(x).format();
+                  return moment(time).format("YYYY-MM-DD kk:mm:ss");
                 }}
                 formatter={(value, name, props) => {
                   const {
                     payload: { loc },
                   } = props;
-                  return `ping: ${value}ms (${iataToCountry(loc)})`;
+                  return (
+                    <div className="flex flex-col gap-1">
+                      <div>{`PING: ${value}ms `}</div>
+                      <div>{`LOC: ${iataToCountry(loc)}`}</div>
+                    </div>
+                  );
                 }}
               />
             }
