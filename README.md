@@ -1,5 +1,5 @@
 # uptime-ui
-监控页面
+监控页面 mo
 
 
 ## Getting Started
